@@ -62,7 +62,8 @@
 osThreadId defaultTaskHandle;
 
 /* USER CODE BEGIN Variables */
-int16_t	temperature;
+float temperature;
+int16_t temperature_int;
 uint8_t temp_H;
 uint8_t temp_L;
 /* USER CODE END Variables */
@@ -76,6 +77,7 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 uint8_t LSM6DSL_read();
 void HTS221_read_reg(void *handle, uint8_t RegAddr, uint16_t NumByteToRead, uint8_t *Data);
+//float HTS221_read_temp(void);
 float HTS221_read_temp(void);
 /* USER CODE END FunctionPrototypes */
 
@@ -85,7 +87,7 @@ float HTS221_read_temp(void);
 
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-       
+	
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -119,12 +121,13 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN StartDefaultTask */
-
+	uint8_t signature;
   /* Infinite loop */
   for(;;)
   {
-	HTS221_read_temp();
-	osDelay(10);
+	temperature = HTS221_read_temp();
+	osDelay(100);
+	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
   }
   /* USER CODE END StartDefaultTask */
 }

@@ -1,4 +1,3 @@
-
 #include "i2c.h"
 #include "LSM6DSL.h"
 //#include "stm32f4xx_hal_i2c.h"

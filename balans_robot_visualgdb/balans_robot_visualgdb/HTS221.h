@@ -1,10 +1,9 @@
 #pragma once
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __LSM6DSL_h
-#define __LSM6DSL_h
+#ifndef __HTS221_h
+#define __HTS221_h
 
-#define LSM6DSL_ADDRESS 0b01101011
 #define HTS221_ADDRESS 0xBE
 
 #define HTS221_DEV_ID 0xBC
@@ -26,7 +25,7 @@
 #define HTS221_H0_T0_OUT_H			0x37					//Humidity Calibration
 #define HTS221_H1_T0_OUT_L			0x3A					//Humidity Calibration
 #define HTS221_H1_T0_OUT_H			0x3B					//Humidity Calibration
-#define HTS221_TO_OUT_L	0x3C					//Temperatuer Calibration
+#define HTS221_T0_OUT_L	0x3C					//Temperatuer Calibration
 #define HTS221_T0_OUT_H	0x3D					//Temperature Calibration
 #define HTS221_T1_OUT_L	0x3E					//Temperature Calibration
 #define HTS221_T1_OUT_H	0x3F	

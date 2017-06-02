@@ -56,10 +56,10 @@ float HTS221_read_temp(void)
 	float T_OUT = 0;
 	
 	//T0_OUT and T1_OUT
-	uint8_t T0_OUT_L = 0;
-	uint8_t T0_OUT_H = 0;
-	uint8_t T1_OUT_L = 0;
-	uint8_t T1_OUT_H = 0;
+	int8_t T0_OUT_L = 0;
+	int8_t T0_OUT_H = 0;
+	int8_t T1_OUT_L = 0;
+	int8_t T1_OUT_H = 0;
 	float T0_OUT = 0;
 	float T1_OUT = 0;
 	
@@ -102,7 +102,6 @@ float HTS221_read_temp(void)
 
 		//Value of T0_OUT_H way of!??!?
 	T0_OUT = (float)((T0_OUT_H << 8) | T0_OUT_L);
-	T0_OUT = 300;
 	T1_OUT = (float)((T1_OUT_H << 8) | T1_OUT_L);
 	T_OUT = (float)((T_OUT_H << 8) | T_OUT_L);
 	

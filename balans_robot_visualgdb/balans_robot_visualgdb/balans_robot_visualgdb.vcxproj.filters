@@ -461,6 +461,9 @@
     <ClInclude Include="LSM6DSL.h">
       <Filter>Header files\Inc</Filter>
     </ClInclude>
+    <ClInclude Include="HTS221.h">
+      <Filter>Header files\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\balans_robot_cube\Src\freertos.c">
@@ -776,6 +779,9 @@
       <Filter>Source files\Src</Filter>
     </ClCompile>
     <ClCompile Include="LSM6DSL.c">
+      <Filter>Source files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="HTS221.c">
       <Filter>Source files\Src</Filter>
     </ClCompile>
   </ItemGroup>

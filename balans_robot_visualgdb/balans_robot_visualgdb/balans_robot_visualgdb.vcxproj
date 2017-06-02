@@ -197,6 +197,7 @@
     <ClInclude Include="..\..\balans_robot_cube\Inc\main.h" />
     <ClInclude Include="..\..\balans_robot_cube\Inc\stm32f4xx_hal_conf.h" />
     <ClInclude Include="..\..\balans_robot_cube\Inc\stm32f4xx_it.h" />
+    <ClInclude Include="HTS221.h" />
     <ClInclude Include="LSM6DSL.h" />
   </ItemGroup>
   <ItemGroup>
@@ -303,6 +304,7 @@
     <ClCompile Include="..\..\balans_robot_cube\Src\stm32f4xx_hal_msp.c" />
     <ClCompile Include="..\..\balans_robot_cube\Src\stm32f4xx_hal_timebase_TIM.c" />
     <ClCompile Include="..\..\balans_robot_cube\Src\stm32f4xx_it.c" />
+    <ClCompile Include="HTS221.c" />
     <ClCompile Include="init_periph.c" />
     <ClCompile Include="LSM6DSL.c" />
   </ItemGroup>

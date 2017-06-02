@@ -3,6 +3,11 @@
   * File Name          : freertos.c
   * Description        : Code for freertos applications
   ******************************************************************************
+  * This notice applies to any and all portions of this file
+  * that are not between comment pairs USER CODE BEGIN and
+  * USER CODE END. Other portions of this file, whether 
+  * inserted by the user or by software development tools
+  * are owned by their respective copyright owners.
   *
   * Copyright (c) 2017 STMicroelectronics International N.V. 
   * All rights reserved.
@@ -45,17 +50,21 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "cmsis_os.h"
-#include "stm32f4xx_hal_gpio.h"
 
 /* USER CODE BEGIN Includes */     
-
+#include "main.h"
+#include "stm32f4xx_hal_gpio.h"
+#include "HTS221.h"
+#include "i2c.h"
 /* USER CODE END Includes */
 
 /* Variables -----------------------------------------------------------------*/
 osThreadId defaultTaskHandle;
 
 /* USER CODE BEGIN Variables */
-
+int16_t	temperature;
+uint8_t temp_H;
+uint8_t temp_L;
 /* USER CODE END Variables */
 
 /* Function prototypes -------------------------------------------------------*/
@@ -64,7 +73,10 @@ void StartDefaultTask(void const * argument);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* USER CODE BEGIN FunctionPrototypes */
+
 uint8_t LSM6DSL_read();
+void HTS221_read_reg(void *handle, uint8_t RegAddr, uint16_t NumByteToRead, uint8_t *Data);
+float HTS221_read_temp(void);
 /* USER CODE END FunctionPrototypes */
 
 /* Hook prototypes */
@@ -107,13 +119,12 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN StartDefaultTask */
-	uint8_t i2ctest = 0;
+
   /* Infinite loop */
   for(;;)
   {
-	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);	//Test led
-	i2ctest= LSM6DSL_read();
-    osDelay(10);
+	HTS221_read_temp();
+	osDelay(10);
   }
   /* USER CODE END StartDefaultTask */
 }

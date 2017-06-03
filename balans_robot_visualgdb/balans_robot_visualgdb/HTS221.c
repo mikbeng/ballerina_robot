@@ -3,23 +3,51 @@
 #include "cmsis_os.h"
 #include "HTS221.h"
 
-
+//Calibration variables, global for HTS221.c
+float T0_OUT = 0;
+float T1_OUT = 0;
+float T0_DegC = 0;
+float T1_DegC = 0;
 
 void HTS221_init(void)
 {
 	uint8_t signature;
+
+	//Calibration variables - local
+	int8_t T0_OUT_L = 0;
+	int8_t T0_OUT_H = 0;
+	int8_t T1_OUT_L = 0;
+	int8_t T1_OUT_H = 0;
+	uint8_t T0_degC_x8 = 0;
+	uint8_t T1_degC_x8 = 0;
+	uint8_t Msb_TO_T1_degC = 0;
 	
-	//i2c_wr_data[0] = HTS221_CTRL_REG1;
 	uint8_t ctrl_reg1_conf = 0b10000100;
-	uint8_t av_reg_conf = 0b01000100;
-	
+
 	HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_WHO_AM_I, 1, &signature, 1, 100);	//Get device signature
 	
 	if (signature == HTS221_DEV_ID)
 	{
-		HAL_I2C_Mem_Write(&hi2c1, HTS221_ADDRESS, HTS221_CTRL_REG1, 1, &ctrl_reg1_conf, 1, 10);	//Config device
-		HAL_I2C_Mem_Write(&hi2c1, HTS221_ADDRESS, HTS221_AV_CONF, 1, &av_reg_conf, 1, 10);
+		//Config device PD>>1 and BDU>>1 in ctrl_reg1
+		HAL_I2C_Mem_Write(&hi2c1, HTS221_ADDRESS, HTS221_CTRL_REG1, 1, &ctrl_reg1_conf, 1, 10);	
 		
+		//Calibration - temperature
+		HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T0_OUT_L, 1, &T0_OUT_L, 1, 10);
+		HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T0_OUT_H, 1, &T0_OUT_H, 1, 10);
+		HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T1_OUT_L, 1, &T1_OUT_L, 1, 10);
+		HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T1_OUT_H, 1, &T1_OUT_H, 1, 10);
+		HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T0_degC_x8, 1, &T0_degC_x8, 1, 10);
+		HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T1_degC_x8, 1, &T1_degC_x8, 1, 10);
+		HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T1_T0_Msb, 1, &Msb_TO_T1_degC, 1, 10);
+		//Process Calibration Registers
+		T0_DegC = ((float)(((Msb_TO_T1_degC & 0x3) << 8) | (T0_degC_x8)) / 8.0);
+		T1_DegC = ((float)(((Msb_TO_T1_degC & 0xC) << 6) | (T1_degC_x8)) / 8.0); //Value in 3rd and 4th bit so only shift 6
+		T0_OUT = (float)((T0_OUT_H << 8) | T0_OUT_L);
+		T1_OUT = (float)((T1_OUT_H << 8) | T1_OUT_L);
+	}
+	else
+	{
+		//Init error
 	}
 }
 
@@ -42,29 +70,9 @@ float HTS221_read_temp(void)
 
 	/* Local Variables */
 	uint8_t STATUS_REG = 0;
-	
-	//T0_degC and T1_degC
-	uint8_t T0_degC_x8 = 0;
-	uint8_t T1_degC_x8 = 0;
-	uint8_t Msb_TO_T1_degC = 0;
-	float T0_DegC = 0;
-	float T1_DegC = 0;
-	
-	//T_OUT
 	uint8_t T_OUT_L = 0;
 	uint8_t T_OUT_H = 0;
 	float T_OUT = 0;
-	
-	//T0_OUT and T1_OUT
-	int8_t T0_OUT_L = 0;
-	int8_t T0_OUT_H = 0;
-	int8_t T1_OUT_L = 0;
-	int8_t T1_OUT_H = 0;
-	float T0_OUT = 0;
-	float T1_OUT = 0;
-	
-	float temperature_10;
-	//Temperature Variables
 	float Temperature_In_C = 0;
 	float Temperature_In_F = 0;
 	
@@ -79,31 +87,9 @@ float HTS221_read_temp(void)
 	
 	//Read Temperature Data and Calibration
 	HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_TEMP_OUT_L, 1, &T_OUT_L, 1, 10);	
-	
 	HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_TEMP_OUT_H, 1, &T_OUT_H, 1, 10);
 	
-	HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T0_OUT_L, 1, &T0_OUT_L, 1, 10);
-	
-	HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T0_OUT_H, 1, &T0_OUT_H, 1, 10);
-	
-	HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T1_OUT_L, 1, &T1_OUT_L, 1, 10);
-	
-	HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T1_OUT_H, 1, &T1_OUT_H, 1, 10);
-	
-	HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T0_degC_x8, 1, &T0_degC_x8, 1, 10);
-	
-	HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T1_degC_x8, 1, &T1_degC_x8, 1, 10);
-	
-	HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_T1_T0_Msb, 1, &Msb_TO_T1_degC, 1, 10);
-	
-	//Process Calibration Registers
-	T0_DegC = ((float)(((Msb_TO_T1_degC & 0x3) << 8) | (T0_degC_x8)) / 8.0);
-	T1_DegC = ((float)(((Msb_TO_T1_degC & 0xC) << 6) | (T1_degC_x8)) / 8.0); //Value in 3rd and 4th bit so only shift 6
-
-		//Value of T0_OUT_H way of!??!?
-	T0_OUT = (float)((T0_OUT_H << 8) | T0_OUT_L);
-	T1_OUT = (float)((T1_OUT_H << 8) | T1_OUT_L);
-	T_OUT = (float)((T_OUT_H << 8) | T_OUT_L);
+	T_OUT =  (float)((T_OUT_H << 8) | T_OUT_L);
 	
 	//Calculate Temperatuer using linear interpolation and convert to Fahrenheit
 	Temperature_In_C = (float)(T0_DegC + ((T_OUT - T0_OUT)*(T1_DegC - T0_DegC)) / (T1_OUT - T0_OUT));

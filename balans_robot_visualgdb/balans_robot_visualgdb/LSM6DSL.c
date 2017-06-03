@@ -1,23 +1,28 @@
 #include "i2c.h"
 #include "LSM6DSL.h"
-//#include "stm32f4xx_hal_i2c.h"
 
-uint8_t ret_value;
 
-void LSM6DSL_config(void)
+void LSM6DSL_init(void)
 {
-	uint8_t CTRL_write1 = 0x80;
-	//HAL_I2C_Mem_Write(&hi2c1, LSM6DSL_ADDRESS, ctrl_reg, 1, &CTRL_write1, 1, 100);	//Sets the DS3502 in mode 1
-}
+	uint8_t signature;
 
-uint8_t LSM6DSL_read(void)
-{
-	/*
-	uint8_t i2c_data[2];
-	i2c_data[0] = 0x20;
-	i2c_data[1] = wiper_wr;
-	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, WHO_AM_I_ADDRESS, 2, &ret_value, 2, 100);	//Sets the DS3502 in mode 1
-	HAL_StatusTypeDef status = HAL_I2C_Master_Transmit(&hi2c1, LSM6DSL_ADDRESS, i2c_data, 2, 10);
-	return ret_value;
-	*/
+	uint8_t ctrl_reg1_XL_conf = 0b01010000;			//208Hz Normal mode. FS=+-2g
+	uint8_t ctrl_reg2_G_conf = 0b01010000;			//208Hz Normal mode. FS=245dps
+	uint8_t ctrl_reg3_C_conf = 0b01000100;			//BDU=1. IF_INC=1 (default)
+
+	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_WHO_AM_I_REG, 1, &signature, 1, 100);	//Get device signature
+	
+	if (signature == LSM6DSL_ACC_GYRO_WHO_AM_I)
+	{
+		//Config device
+		HAL_I2C_Mem_Write(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_CTRL1_XL, 1, &ctrl_reg1_XL_conf, 1, 10);	
+		HAL_I2C_Mem_Write(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_CTRL2_G, 1, &ctrl_reg2_G_conf, 1, 10);
+		HAL_I2C_Mem_Write(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_CTRL3_C, 1, &ctrl_reg3_C_conf, 1, 10);
+		
+		//Calibration?	
+	}
+	else
+	{
+		//Init error
+	}
 }

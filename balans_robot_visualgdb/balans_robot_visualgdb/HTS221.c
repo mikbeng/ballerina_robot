@@ -85,7 +85,7 @@ float HTS221_read_temp(void)
 	} while ((STATUS_REG & HTS221_STATUS_REG_TDA) == 0);
 	
 	
-	//Read Temperature Data and Calibration
+	//Read Temperature Data
 	HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_TEMP_OUT_L, 1, &T_OUT_L, 1, 10);	
 	HAL_I2C_Mem_Read(&hi2c1, HTS221_ADDRESS, HTS221_TEMP_OUT_H, 1, &T_OUT_H, 1, 10);
 	

@@ -73,6 +73,8 @@
 
 /* USER CODE BEGIN Private defines */
 void HTS221_init(void);
+void LSM6DSL_init(void);
+
 /* USER CODE END Private defines */
 
 void _Error_Handler(char *, int);

@@ -75,10 +75,11 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* USER CODE BEGIN FunctionPrototypes */
 
-uint8_t LSM6DSL_read();
 void HTS221_read_reg(void *handle, uint8_t RegAddr, uint16_t NumByteToRead, uint8_t *Data);
-//float HTS221_read_temp(void);
 float HTS221_read_temp(void);
+void LSM6DSL_Get_Acc(float *array_data_acc);
+void LSM6DSL_Get_Gyro(float *array_data_gyro);
+void LSM6DSL_Get_config(void);
 /* USER CODE END FunctionPrototypes */
 
 /* Hook prototypes */
@@ -121,11 +122,14 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN StartDefaultTask */
-	uint8_t signature;
+	float Acc_data[3] =  {0.0, 0.0, 0.0};
+	float Gyro_data[3] = { 0.0, 0.0, 0.0 };
   /* Infinite loop */
   for(;;)
   {
 	temperature = HTS221_read_temp();
+	LSM6DSL_Get_Acc(Acc_data);
+	LSM6DSL_Get_Gyro(Gyro_data);
 	osDelay(100);
 	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
   }

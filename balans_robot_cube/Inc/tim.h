@@ -1,7 +1,8 @@
 /**
   ******************************************************************************
-  * File Name          : freertos.c
-  * Description        : Code for freertos applications
+  * File Name          : TIM.h
+  * Description        : This file provides code for the configuration
+  *                      of the TIM instances.
   ******************************************************************************
   * This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
@@ -45,99 +46,49 @@
   *
   ******************************************************************************
   */
+/* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef __tim_H
+#define __tim_H
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "FreeRTOS.h"
-#include "task.h"
-#include "cmsis_os.h"
-
-/* USER CODE BEGIN Includes */     
+#include "stm32f4xx_hal.h"
 #include "main.h"
-#include "stm32f4xx_hal_gpio.h"
-#include "HTS221.h"
-#include "i2c.h"
+
+/* USER CODE BEGIN Includes */
+
 /* USER CODE END Includes */
 
-/* Variables -----------------------------------------------------------------*/
-osThreadId defaultTaskHandle;
+extern TIM_HandleTypeDef htim2;
 
-/* USER CODE BEGIN Variables */
-float temperature;
-int16_t temperature_int;
-uint8_t temp_H;
-uint8_t temp_L;
-/* USER CODE END Variables */
+/* USER CODE BEGIN Private defines */
 
-/* Function prototypes -------------------------------------------------------*/
-void StartDefaultTask(void const * argument);
+/* USER CODE END Private defines */
 
-void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+extern void _Error_Handler(char *, int);
 
-/* USER CODE BEGIN FunctionPrototypes */
+void MX_TIM2_Init(void);
+                    
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+                
 
-void HTS221_read_reg(void *handle, uint8_t RegAddr, uint16_t NumByteToRead, uint8_t *Data);
-float HTS221_read_temp(void);
-void LSM6DSL_Get_Acc(float *array_data_acc);
-void LSM6DSL_Get_Gyro(float *array_data_gyro);
-void LSM6DSL_Get_config(void);
-/* USER CODE END FunctionPrototypes */
+/* USER CODE BEGIN Prototypes */
 
-/* Hook prototypes */
+/* USER CODE END Prototypes */
 
-/* Init FreeRTOS */
-
-void MX_FREERTOS_Init(void) {
-  /* USER CODE BEGIN Init */
-	
-  /* USER CODE END Init */
-
-  /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
-  /* USER CODE END RTOS_MUTEX */
-
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
-  /* USER CODE END RTOS_SEMAPHORES */
-
-  /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
-  /* USER CODE END RTOS_TIMERS */
-
-  /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
-
-  /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
-  /* USER CODE END RTOS_THREADS */
-
-  /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
+#ifdef __cplusplus
 }
+#endif
+#endif /*__ tim_H */
 
-/* StartDefaultTask function */
-void StartDefaultTask(void const * argument)
-{
+/**
+  * @}
+  */
 
-  /* USER CODE BEGIN StartDefaultTask */
-	float Acc_data[3] =  {0.0, 0.0, 0.0};
-	float Gyro_data[3] = { 0.0, 0.0, 0.0 };
-  /* Infinite loop */
-  for(;;)
-  {
-	//temperature = HTS221_read_temp();
-	//LSM6DSL_Get_Acc(Acc_data);
-	//LSM6DSL_Get_Gyro(Gyro_data);
-	osDelay(100);
-	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-  }
-  /* USER CODE END StartDefaultTask */
-}
-
-/* USER CODE BEGIN Application */
-     
-/* USER CODE END Application */
+/**
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

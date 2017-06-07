@@ -1,7 +1,8 @@
 /**
   ******************************************************************************
-  * File Name          : freertos.c
-  * Description        : Code for freertos applications
+  * File Name          : TIM.c
+  * Description        : This file provides code for the configuration
+  *                      of the TIM instances.
   ******************************************************************************
   * This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
@@ -47,97 +48,123 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "FreeRTOS.h"
-#include "task.h"
-#include "cmsis_os.h"
+#include "tim.h"
 
-/* USER CODE BEGIN Includes */     
-#include "main.h"
-#include "stm32f4xx_hal_gpio.h"
-#include "HTS221.h"
-#include "i2c.h"
-/* USER CODE END Includes */
+/* USER CODE BEGIN 0 */
 
-/* Variables -----------------------------------------------------------------*/
-osThreadId defaultTaskHandle;
+/* USER CODE END 0 */
 
-/* USER CODE BEGIN Variables */
-float temperature;
-int16_t temperature_int;
-uint8_t temp_H;
-uint8_t temp_L;
-/* USER CODE END Variables */
+TIM_HandleTypeDef htim2;
 
-/* Function prototypes -------------------------------------------------------*/
-void StartDefaultTask(void const * argument);
+/* TIM2 init function */
+void MX_TIM2_Init(void)
+{
+  TIM_MasterConfigTypeDef sMasterConfig;
+  TIM_OC_InitTypeDef sConfigOC;
 
-void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 50;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 4198;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
 
-/* USER CODE BEGIN FunctionPrototypes */
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
 
-void HTS221_read_reg(void *handle, uint8_t RegAddr, uint16_t NumByteToRead, uint8_t *Data);
-float HTS221_read_temp(void);
-void LSM6DSL_Get_Acc(float *array_data_acc);
-void LSM6DSL_Get_Gyro(float *array_data_gyro);
-void LSM6DSL_Get_config(void);
-/* USER CODE END FunctionPrototypes */
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 2099;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
 
-/* Hook prototypes */
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
 
-/* Init FreeRTOS */
+  HAL_TIM_MspPostInit(&htim2);
 
-void MX_FREERTOS_Init(void) {
-  /* USER CODE BEGIN Init */
-	
-  /* USER CODE END Init */
-
-  /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
-  /* USER CODE END RTOS_MUTEX */
-
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
-  /* USER CODE END RTOS_SEMAPHORES */
-
-  /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
-  /* USER CODE END RTOS_TIMERS */
-
-  /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
-
-  /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
-  /* USER CODE END RTOS_THREADS */
-
-  /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
 }
 
-/* StartDefaultTask function */
-void StartDefaultTask(void const * argument)
+void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* tim_pwmHandle)
 {
 
-  /* USER CODE BEGIN StartDefaultTask */
-	float Acc_data[3] =  {0.0, 0.0, 0.0};
-	float Gyro_data[3] = { 0.0, 0.0, 0.0 };
-  /* Infinite loop */
-  for(;;)
+  if(tim_pwmHandle->Instance==TIM2)
   {
-	//temperature = HTS221_read_temp();
-	//LSM6DSL_Get_Acc(Acc_data);
-	//LSM6DSL_Get_Gyro(Gyro_data);
-	osDelay(100);
-	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+  /* USER CODE BEGIN TIM2_MspInit 0 */
+
+  /* USER CODE END TIM2_MspInit 0 */
+    /* Peripheral clock enable */
+    __HAL_RCC_TIM2_CLK_ENABLE();
+  /* USER CODE BEGIN TIM2_MspInit 1 */
+
+  /* USER CODE END TIM2_MspInit 1 */
   }
-  /* USER CODE END StartDefaultTask */
+}
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
+{
+
+  GPIO_InitTypeDef GPIO_InitStruct;
+  if(timHandle->Instance==TIM2)
+  {
+  /* USER CODE BEGIN TIM2_MspPostInit 0 */
+
+  /* USER CODE END TIM2_MspPostInit 0 */
+  
+    /**TIM2 GPIO Configuration    
+    PA0-WKUP     ------> TIM2_CH1
+    PA1     ------> TIM2_CH2 
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* USER CODE BEGIN TIM2_MspPostInit 1 */
+
+  /* USER CODE END TIM2_MspPostInit 1 */
+  }
+
 }
 
-/* USER CODE BEGIN Application */
-     
-/* USER CODE END Application */
+void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef* tim_pwmHandle)
+{
+
+  if(tim_pwmHandle->Instance==TIM2)
+  {
+  /* USER CODE BEGIN TIM2_MspDeInit 0 */
+
+  /* USER CODE END TIM2_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_TIM2_CLK_DISABLE();
+  /* USER CODE BEGIN TIM2_MspDeInit 1 */
+
+  /* USER CODE END TIM2_MspDeInit 1 */
+  }
+} 
+
+/* USER CODE BEGIN 1 */
+/* USER CODE END 1 */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

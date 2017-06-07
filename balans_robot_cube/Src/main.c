@@ -51,6 +51,7 @@
 #include "cmsis_os.h"
 #include "i2c.h"
 #include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
@@ -104,6 +105,7 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   MX_TIM2_Init();
+  MX_USART2_UART_Init();
 
   /* USER CODE BEGIN 2 */
  // HTS221_init();

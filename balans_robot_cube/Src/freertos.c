@@ -56,6 +56,8 @@
 #include "stm32f4xx_hal_gpio.h"
 #include "HTS221.h"
 #include "i2c.h"
+#include "usart.h"
+#include "math.h"
 /* USER CODE END Includes */
 
 /* Variables -----------------------------------------------------------------*/
@@ -122,8 +124,10 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN StartDefaultTask */
+	char *msg = "Hello Nucleo Fun!\n\r";
 	float Acc_data[3] =  {0.0, 0.0, 0.0};
 	float Gyro_data[3] = { 0.0, 0.0, 0.0 };
+	float pi = 3.1417;
   /* Infinite loop */
   for(;;)
   {
@@ -131,6 +135,9 @@ void StartDefaultTask(void const * argument)
 	//LSM6DSL_Get_Acc(Acc_data);
 	//LSM6DSL_Get_Gyro(Gyro_data);
 	osDelay(100);
+	send_float(pi);
+	pi = pi + 0.5;
+	//HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
 	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
   }
   /* USER CODE END StartDefaultTask */

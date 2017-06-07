@@ -467,6 +467,9 @@
     <ClInclude Include="..\..\balans_robot_cube\Inc\tim.h">
       <Filter>Header files\Inc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\balans_robot_cube\Inc\usart.h">
+      <Filter>Header files\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\balans_robot_cube\Src\freertos.c">
@@ -788,6 +791,9 @@
       <Filter>Source files\Src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\balans_robot_cube\Src\tim.c">
+      <Filter>Source files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\balans_robot_cube\Src\usart.c">
       <Filter>Source files\Src</Filter>
     </ClCompile>
   </ItemGroup>

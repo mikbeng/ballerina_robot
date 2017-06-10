@@ -26,7 +26,7 @@
         <IsCollapsed>false</IsCollapsed>
       </LiveVariable>
       <LiveVariable>
-        <Expression>Gyro_data[0]</Expression>
+        <Expression>Acc_data[0]</Expression>
         <Type>Float32</Type>
         <Enabled>true</Enabled>
         <Breakpoint>
@@ -37,7 +37,7 @@
         <IsCollapsed>false</IsCollapsed>
       </LiveVariable>
       <LiveVariable>
-        <Expression>Gyro_data[1]</Expression>
+        <Expression>Acc_data[1]</Expression>
         <Type>Float32</Type>
         <Enabled>true</Enabled>
         <Breakpoint>
@@ -48,7 +48,7 @@
         <IsCollapsed>false</IsCollapsed>
       </LiveVariable>
       <LiveVariable>
-        <Expression>Gyro_data[2]</Expression>
+        <Expression>Acc_data[2]</Expression>
         <Type>Float32</Type>
         <Enabled>true</Enabled>
         <Breakpoint>

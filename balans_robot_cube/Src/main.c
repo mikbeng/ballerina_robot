@@ -61,6 +61,10 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+uint32_t HCLKFreq;				//System clock
+uint32_t APB1_timer_clock;		
+uint32_t Tim2_freq;				//Timer 2 frequency (84MHz) default
+uint32_t Tim2_counter_clock;	//Counter freq after prescaling
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE END PV */
@@ -108,9 +112,11 @@ int main(void)
   MX_USART2_UART_Init();
 
   /* USER CODE BEGIN 2 */
- // HTS221_init();
-  //LSM6DSL_init();
-	HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_1);
+
+  //Inits
+  HTS221_init();
+  LSM6DSL_init();
+
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

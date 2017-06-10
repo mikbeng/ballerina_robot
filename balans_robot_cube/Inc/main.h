@@ -55,9 +55,18 @@
 /* USER CODE END Includes */
 
 /* Private define ------------------------------------------------------------*/
+#define TIM2_PRESCALER 20
 
 #define B1_Pin GPIO_PIN_13
 #define B1_GPIO_Port GPIOC
+#define stepper1_dir_Pin GPIO_PIN_0
+#define stepper1_dir_GPIO_Port GPIOC
+#define stepper1_M0_Pin GPIO_PIN_1
+#define stepper1_M0_GPIO_Port GPIOC
+#define stepper1_M1_Pin GPIO_PIN_2
+#define stepper1_M1_GPIO_Port GPIOC
+#define stepper1_M2_Pin GPIO_PIN_3
+#define stepper1_M2_GPIO_Port GPIOC
 #define USART_TX_Pin GPIO_PIN_2
 #define USART_TX_GPIO_Port GPIOA
 #define USART_RX_Pin GPIO_PIN_3

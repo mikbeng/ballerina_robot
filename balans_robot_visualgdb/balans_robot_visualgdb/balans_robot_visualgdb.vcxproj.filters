@@ -470,6 +470,12 @@
     <ClInclude Include="..\..\balans_robot_cube\Inc\usart.h">
       <Filter>Header files\Inc</Filter>
     </ClInclude>
+    <ClInclude Include="stepper.h">
+      <Filter>Header files\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="init.h">
+      <Filter>Header files\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\balans_robot_cube\Src\freertos.c">
@@ -781,9 +787,6 @@
     <ClCompile Include="..\..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\FreeRTOS\Source\portable\MemMang\heap_4.c">
       <Filter>Source files\Device-specific files\FreeRTOS</Filter>
     </ClCompile>
-    <ClCompile Include="init_periph.c">
-      <Filter>Source files\Src</Filter>
-    </ClCompile>
     <ClCompile Include="LSM6DSL.c">
       <Filter>Source files\Src</Filter>
     </ClCompile>
@@ -794,6 +797,12 @@
       <Filter>Source files\Src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\balans_robot_cube\Src\usart.c">
+      <Filter>Source files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="stepper.c">
+      <Filter>Source files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="init.c">
       <Filter>Source files\Src</Filter>
     </ClCompile>
   </ItemGroup>

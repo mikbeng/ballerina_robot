@@ -200,7 +200,9 @@
     <ClInclude Include="..\..\balans_robot_cube\Inc\tim.h" />
     <ClInclude Include="..\..\balans_robot_cube\Inc\usart.h" />
     <ClInclude Include="HTS221.h" />
+    <ClInclude Include="init.h" />
     <ClInclude Include="LSM6DSL.h" />
+    <ClInclude Include="stepper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.c" />
@@ -309,8 +311,9 @@
     <ClCompile Include="..\..\balans_robot_cube\Src\tim.c" />
     <ClCompile Include="..\..\balans_robot_cube\Src\usart.c" />
     <ClCompile Include="HTS221.c" />
-    <ClCompile Include="init_periph.c" />
+    <ClCompile Include="init.c" />
     <ClCompile Include="LSM6DSL.c" />
+    <ClCompile Include="stepper.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="balans_robot_visualgdb-Debug.vgdbsettings" />

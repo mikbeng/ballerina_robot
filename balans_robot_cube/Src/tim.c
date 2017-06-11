@@ -103,7 +103,7 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* tim_pwmHandle)
   if(tim_pwmHandle->Instance==TIM2)
   {
   /* USER CODE BEGIN TIM2_MspInit 0 */
-
+	
   /* USER CODE END TIM2_MspInit 0 */
     /* Peripheral clock enable */
     __HAL_RCC_TIM2_CLK_ENABLE();

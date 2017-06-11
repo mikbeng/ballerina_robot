@@ -145,6 +145,7 @@ void send_float(float data)	//3 decimals
 			
 	HAL_UART_Transmit(&huart2, &buffer, strnlen(buffer), 0xFFFF);
 }
+
 /* USER CODE END 1 */
 
 /**

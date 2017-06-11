@@ -113,10 +113,7 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 
-  //Inits
-  HTS221_init();
-  LSM6DSL_init();
-
+	init_system();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

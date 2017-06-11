@@ -82,6 +82,7 @@ float HTS221_read_temp(void);
 void LSM6DSL_Get_Acc(float *array_data_acc);
 void LSM6DSL_Get_Gyro(float *array_data_gyro);
 void LSM6DSL_Get_config(void);
+void send_velocity(float v);
 /* USER CODE END FunctionPrototypes */
 
 /* Hook prototypes */
@@ -128,16 +129,25 @@ void StartDefaultTask(void const * argument)
 	float Acc_data[3] =  {0.0, 0.0, 0.0};
 	float Gyro_data[3] = { 0.0, 0.0, 0.0 };
 	float pi = 3.1417;
+	float v = 0.01;
+	uint8_t v_cm = 0;
+	uint8_t button = 0;
+	uint8_t serial_in_buffer[1];
   /* Infinite loop */
   for(;;)
   {
+	HAL_UART_Receive(&huart2, serial_in_buffer, 1, 10);
+	v_cm=serial_in_buffer[0];
+	//v = (float)(v_cm);
 	//temperature = HTS221_read_temp();
 	//LSM6DSL_Get_Acc(Acc_data);
 	//LSM6DSL_Get_Gyro(Gyro_data);
 	osDelay(100);
-	send_float(pi);
-	pi = pi + 0.5;
-	//HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	send_velocity(v_cm);
+
+	  
+	//send_float(pi);
+	//pi = pi + 0.5;
 	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
   }
   /* USER CODE END StartDefaultTask */

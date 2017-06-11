@@ -81,8 +81,7 @@
 #define SWO_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
-void HTS221_init(void);
-void LSM6DSL_init(void);
+void init_system(void);
 
 /* USER CODE END Private defines */
 

@@ -113,6 +113,7 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 
+	HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_1);	//start PWM
 	init_system();
   /* USER CODE END 2 */
 

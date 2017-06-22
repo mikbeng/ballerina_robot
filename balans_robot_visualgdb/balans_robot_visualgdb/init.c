@@ -14,7 +14,10 @@ void init_system(void)
 	//Inits
 	HTS221_init();
 	LSM6DSL_init();
-	stepper1_setstep(STEP_SIZE_1_16);
+	//stepper1_setstep(STEP_SIZE_1_16);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_SET);
 	get_clock_status();
 	SET_BIT(TIM2->CR1, TIM_CR1_ARPE);
 

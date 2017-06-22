@@ -133,22 +133,31 @@ void StartDefaultTask(void const * argument)
 	uint8_t v_cm = 0;
 	uint8_t button = 0;
 	uint8_t serial_in_buffer[1];
+	uint8_t v_cm_old = 0;
   /* Infinite loop */
   for(;;)
   {
 	HAL_UART_Receive(&huart2, serial_in_buffer, 1, 10);
 	v_cm=serial_in_buffer[0];
-	//v = (float)(v_cm);
-	//temperature = HTS221_read_temp();
-	//LSM6DSL_Get_Acc(Acc_data);
-	//LSM6DSL_Get_Gyro(Gyro_data);
-	osDelay(100);
-	send_velocity(v_cm);
-
+	
+	  if (v_cm != v_cm_old)
+	  {
+		  
 	  
+	  
+		  v = (float)(v_cm) / 1;
+		  //temperature = HTS221_read_temp();
+		  //LSM6DSL_Get_Acc(Acc_data);
+		  //LSM6DSL_Get_Gyro(Gyro_data);
+		  osDelay(100);
+		  send_velocity(v);
+
+	  }
 	//send_float(pi);
 	//pi = pi + 0.5;
 	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+	  
+	v_cm_old = v_cm; 
   }
   /* USER CODE END StartDefaultTask */
 }

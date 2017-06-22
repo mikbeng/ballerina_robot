@@ -57,7 +57,7 @@ void send_velocity(float v)
 	float w_deg = 0;
 	float v_abs = 0;
 
-	v = abs(v);
+	//v = abs(v);
 
 	if (v <= 0.1)
 	{

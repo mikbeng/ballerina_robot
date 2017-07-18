@@ -68,6 +68,7 @@ float temperature;
 int16_t temperature_int;
 uint8_t temp_H;
 uint8_t temp_L;
+float w = M_PI;
 /* USER CODE END Variables */
 
 /* Function prototypes -------------------------------------------------------*/
@@ -82,7 +83,7 @@ float HTS221_read_temp(void);
 void LSM6DSL_Get_Acc(float *array_data_acc);
 void LSM6DSL_Get_Gyro(float *array_data_gyro);
 void LSM6DSL_Get_config(void);
-void send_velocity(float v);
+void send_ang_velocity(float w);
 /* USER CODE END FunctionPrototypes */
 
 /* Hook prototypes */
@@ -108,16 +109,16 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+	osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+	defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
-  /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
-  /* USER CODE END RTOS_THREADS */
+	  /* USER CODE BEGIN RTOS_THREADS */
+	  /* add threads, ... */
+	  /* USER CODE END RTOS_THREADS */
 
-  /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
+	    /* USER CODE BEGIN RTOS_QUEUES */
+	    /* add queues, ... */
+	    /* USER CODE END RTOS_QUEUES */
 }
 
 /* StartDefaultTask function */
@@ -126,40 +127,39 @@ void StartDefaultTask(void const * argument)
 
   /* USER CODE BEGIN StartDefaultTask */
 	char *msg = "Hello Nucleo Fun!\n\r";
-	float Acc_data[3] =  {0.0, 0.0, 0.0};
+	float Acc_data[3] = { 0.0, 0.0, 0.0 };
 	float Gyro_data[3] = { 0.0, 0.0, 0.0 };
 	float pi = 3.1417;
-	float v = 0.01;
+	
+	float ang_acc = 0;
 	uint8_t v_cm = 0;
 	uint8_t button = 0;
 	uint8_t serial_in_buffer[1];
+	int8_t acc_in = 0;
 	uint8_t v_cm_old = 0;
+	float h = 0.01;
   /* Infinite loop */
-  for(;;)
-  {
-	HAL_UART_Receive(&huart2, serial_in_buffer, 1, 10);
-	v_cm=serial_in_buffer[0];
+	for (;;)
+	{
+		HAL_UART_Receive(&huart2, serial_in_buffer, 1, 10);
+		acc_in=(int8_t) serial_in_buffer[0];
+		
+		ang_acc = ((float) acc_in) / 10;
 	
-	  if (v_cm != v_cm_old)
-	  {
-		  
+		//ang_acc = 0.5;
 	  
-	  
-		  v = (float)(v_cm) / 1;
-		  //temperature = HTS221_read_temp();
-		  //LSM6DSL_Get_Acc(Acc_data);
-		  //LSM6DSL_Get_Gyro(Gyro_data);
-		  osDelay(100);
-		  send_velocity(v);
+		w = (ang_acc*h) + w;  
+		send_ang_velocity(w);
 
-	  }
-	//send_float(pi);
-	//pi = pi + 0.5;
-	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 	  
-	v_cm_old = v_cm; 
-  }
-  /* USER CODE END StartDefaultTask */
+		//send_float(pi);
+		//pi = pi + 0.5;
+		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+	  
+		v_cm_old = v_cm; 
+		osDelay(10);
+	}
+	/* USER CODE END StartDefaultTask */
 }
 
 /* USER CODE BEGIN Application */

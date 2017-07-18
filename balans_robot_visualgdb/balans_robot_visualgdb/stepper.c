@@ -8,6 +8,10 @@ extern uint32_t Tim2_counter_clock;
 
 void stepper1_setstep(uint32_t step_size_used)
 {
+	//PC1 -> MS1
+	//PC2 -> MS2
+	//PC3 -> MS3
+	
 	switch (step_size_used)
 	{
 	case 1  :
@@ -35,21 +39,23 @@ void stepper1_setstep(uint32_t step_size_used)
 		break; /* optional */
 
 	case 16  :
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_SET);
 		break; /* optional */
 
+		/*
 	case 32  :
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_SET);
-		break; /* optional */
+		break; 
+		*/
 	}
 
 }
 
-void send_velocity(float v)
+void send_ang_velocity(float w)	//in radians
 {
 	uint32_t PWM_freq;
 	uint32_t PWM_ARR;
@@ -59,7 +65,7 @@ void send_velocity(float v)
 
 	//v = abs(v);
 
-	if (v <= 0.1)
+	if (w <= 0.1)
 	{
 		//Stop PWM
 		HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_1);
@@ -81,10 +87,9 @@ void send_velocity(float v)
 	}*/
 
 	
-	else if (v > 0.1)
+	else if (w > 0.1)
 	{
-		w_rad = v / (WHEEL_D / 2);	 //centi-rad per sec
-		w_deg = w_rad*(180 / M_PI);	 //centi-degrees per sec
+		w_deg = w*(180 / M_PI);	 //degrees per sec
 		PWM_freq = (uint32_t)(w_deg / (STEP_SIZE / STEP_SIZE_USE));
 		PWM_ARR = (uint32_t)(Tim2_counter_clock / PWM_freq);
 		TIM2->ARR = PWM_ARR;

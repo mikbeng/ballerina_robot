@@ -18,7 +18,7 @@
 #define STEP_SIZE_1_16	16
 #define STEP_SIZE_1_32	32
 
-#define STEP_SIZE_USE (16)
+#define STEP_SIZE_USE (STEP_SIZE_1_16)
 
 #define V_ABS_LIM (200)
 

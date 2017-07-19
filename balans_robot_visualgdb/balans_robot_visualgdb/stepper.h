@@ -20,8 +20,10 @@
 
 #define STEP_SIZE_USE (STEP_SIZE_1_16)
 
-#define V_ABS_LIM (200)
-
+#define STEPPER1_POS_DIR (1)
+#define STEPPER1_NEG_DIR (0)
+#define STEPPER2_POS_DIR (0)
+#define STEPPER2_NEG_DIR (1)
 
 // Tangential velocity define
 #define WHEEL_D (6.5f)			//wheel diameter in cm

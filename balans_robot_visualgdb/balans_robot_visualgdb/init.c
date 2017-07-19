@@ -14,11 +14,11 @@ void init_system(void)
 	//Inits
 	HTS221_init();
 	LSM6DSL_init();
-	stepper1_setstep(STEP_SIZE_USE);
+	stepper_setstep(STEP_SIZE_USE,STEPPER_1);
+	stepper_setstep(STEP_SIZE_USE, STEPPER_2);
 	get_clock_status();
-	SET_BIT(TIM2->CR1, TIM_CR1_ARPE);
+	SET_BIT(TIM2->CR1, TIM_CR1_ARPE);	//Enables ARPE BIT in CR1 reg for TIM2_ARR auto reload mode
 
-	//TIM2->CR1 &= ~(TIM_CR1_ARPE_Msk);		//Enables ARPE BIT in CR1 reg for TIM2_ARR auto reload mode
 }
 
 void get_clock_status(void)

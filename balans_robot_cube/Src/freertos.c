@@ -68,7 +68,9 @@ float temperature;
 int16_t temperature_int;
 uint8_t temp_H;
 uint8_t temp_L;
-float w = M_PI;
+float Acc_data[3] = { 0.0, 0.0, 0.0 };
+float Gyro_data[3] = { 0.0, 0.0, 0.0 };
+float w_rad = M_PI;
 /* USER CODE END Variables */
 
 /* Function prototypes -------------------------------------------------------*/
@@ -83,7 +85,7 @@ float HTS221_read_temp(void);
 void LSM6DSL_Get_Acc(float *array_data_acc);
 void LSM6DSL_Get_Gyro(float *array_data_gyro);
 void LSM6DSL_Get_config(void);
-void send_ang_velocity(float w);
+void send_ang_velocity(float w_rad);
 /* USER CODE END FunctionPrototypes */
 
 /* Hook prototypes */
@@ -109,16 +111,16 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-	osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-	defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
-	  /* USER CODE BEGIN RTOS_THREADS */
+  /* USER CODE BEGIN RTOS_THREADS */
 	  /* add threads, ... */
-	  /* USER CODE END RTOS_THREADS */
+  /* USER CODE END RTOS_THREADS */
 
-	    /* USER CODE BEGIN RTOS_QUEUES */
+  /* USER CODE BEGIN RTOS_QUEUES */
 	    /* add queues, ... */
-	    /* USER CODE END RTOS_QUEUES */
+  /* USER CODE END RTOS_QUEUES */
 }
 
 /* StartDefaultTask function */
@@ -127,9 +129,6 @@ void StartDefaultTask(void const * argument)
 
   /* USER CODE BEGIN StartDefaultTask */
 	char *msg = "Hello Nucleo Fun!\n\r";
-	float Acc_data[3] = { 0.0, 0.0, 0.0 };
-	float Gyro_data[3] = { 0.0, 0.0, 0.0 };
-	float pi = 3.1417;
 	
 	float ang_acc = 0;
 	uint8_t v_cm = 0;
@@ -141,15 +140,19 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
 	for (;;)
 	{
+		LSM6DSL_Get_Acc(Acc_data);
+		
 		HAL_UART_Receive(&huart2, serial_in_buffer, 1, 10);
 		acc_in=(int8_t) serial_in_buffer[0];
 		
 		ang_acc = ((float) acc_in) / 10;
 	
 		//ang_acc = 0.5;
+		
+		
 	  
-		w = (ang_acc*h) + w;  
-		send_ang_velocity(w);
+		w_rad = (ang_acc*h) + w_rad;  
+		send_ang_velocity(w_rad);
 
 	  
 		//send_float(pi);
@@ -159,7 +162,7 @@ void StartDefaultTask(void const * argument)
 		v_cm_old = v_cm; 
 		osDelay(10);
 	}
-	/* USER CODE END StartDefaultTask */
+  /* USER CODE END StartDefaultTask */
 }
 
 /* USER CODE BEGIN Application */

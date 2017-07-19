@@ -6,105 +6,149 @@
 
 extern uint32_t Tim2_counter_clock;
 
-void stepper1_setstep(uint32_t step_size_used)
+void stepper_setstep(uint32_t step_size_used, uint32_t stepper_val)
 {
-	//PC1 -> MS1
-	//PC2 -> MS2
-	//PC3 -> MS3
-	
-	switch (step_size_used)
+
+	if (stepper_val == 1)
 	{
-	case 1  :
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_RESET);
-		break; /* optional */
+		//For stepper 1
+		//PC1 -> MS1
+		//PC2 -> MS2
+		//PC3 -> MS3
+		switch (step_size_used)
+		{
+		case 1  :
+			HAL_GPIO_WritePin(stepper1_MS1_GPIO_Port, stepper1_MS1_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(stepper1_MS2_GPIO_Port, stepper1_MS2_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(stepper1_MS3_GPIO_Port, stepper1_MS3_Pin, GPIO_PIN_RESET);
+			break; /* optional */
 
-	case 2  :
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_RESET);
-		break; /* optional */
+		case 2  :
+			HAL_GPIO_WritePin(stepper1_MS1_GPIO_Port, stepper1_MS1_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(stepper1_MS2_GPIO_Port, stepper1_MS2_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(stepper1_MS3_GPIO_Port, stepper1_MS3_Pin, GPIO_PIN_RESET);
+			break; /* optional */
 
-	case 4  :
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_RESET);
-		break; /* optional */
+		case 4  :
+			HAL_GPIO_WritePin(stepper1_MS1_GPIO_Port, stepper1_MS1_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(stepper1_MS2_GPIO_Port, stepper1_MS2_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(stepper1_MS3_GPIO_Port, stepper1_MS3_Pin, GPIO_PIN_RESET);
+			break; /* optional */
 
-	case 8  :
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_RESET);
-		break; /* optional */
+		case 8  :
+			HAL_GPIO_WritePin(stepper1_MS1_GPIO_Port, stepper1_MS1_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(stepper1_MS2_GPIO_Port, stepper1_MS2_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(stepper1_MS3_GPIO_Port, stepper1_MS3_Pin, GPIO_PIN_RESET);
+			break; /* optional */
 
-	case 16  :
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_SET);
-		break; /* optional */
-
-		/*
-	case 32  :
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_SET);
-		break; 
-		*/
+		case 16  :
+			HAL_GPIO_WritePin(stepper1_MS1_GPIO_Port, stepper1_MS1_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(stepper1_MS2_GPIO_Port, stepper1_MS2_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(stepper1_MS3_GPIO_Port, stepper1_MS3_Pin, GPIO_PIN_SET);
+			break; /* optional */
+		}
 	}
+	else if (stepper_val == 2)
+	{
+		//For stepper 2
+		//PC10 -> MS1
+		//PC12 -> MS2
+		//PD2 -> MS3
+		switch (step_size_used)
+		{
+		case 1  :
+			HAL_GPIO_WritePin(stepper2_MS1_GPIO_Port, stepper2_MS1_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(stepper2_MS2_GPIO_Port, stepper2_MS2_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(stepper2_MS3_GPIO_Port, stepper2_MS3_Pin, GPIO_PIN_RESET);
+			break; /* optional */
 
+		case 2  :
+			HAL_GPIO_WritePin(stepper2_MS1_GPIO_Port, stepper2_MS1_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(stepper2_MS2_GPIO_Port, stepper2_MS2_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(stepper2_MS3_GPIO_Port, stepper2_MS3_Pin, GPIO_PIN_RESET);
+			break; /* optional */
+
+		case 4  :
+			HAL_GPIO_WritePin(stepper2_MS1_GPIO_Port, stepper2_MS1_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(stepper2_MS2_GPIO_Port, stepper2_MS2_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(stepper2_MS3_GPIO_Port, stepper2_MS3_Pin, GPIO_PIN_RESET);
+			break; /* optional */
+
+		case 8  :
+			HAL_GPIO_WritePin(stepper2_MS1_GPIO_Port, stepper2_MS1_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(stepper2_MS2_GPIO_Port, stepper2_MS2_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(stepper2_MS3_GPIO_Port, stepper2_MS3_Pin, GPIO_PIN_RESET);
+			break; /* optional */
+
+		case 16  :
+			HAL_GPIO_WritePin(stepper2_MS1_GPIO_Port, stepper2_MS1_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(stepper2_MS2_GPIO_Port, stepper2_MS2_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(stepper2_MS3_GPIO_Port, stepper2_MS3_Pin, GPIO_PIN_SET);
+			break; /* optional */
+		}
+	}
 }
 
-void send_ang_velocity(float w)	//in radians
+void send_ang_velocity(float w_rad)	//in radians
 {
 	uint32_t PWM_freq;
 	uint32_t PWM_ARR;
-	float w_rad = 0;
 	float w_deg = 0;
-	float v_abs = 0;
 
-	//v = abs(v);
 
-	if (w <= 0.1)
+	if (w_rad > 0)
 	{
-		//Stop PWM
-		HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_1);
-	}
-
-	//Check sign
-		//If change in sign from prevoius. Change dir.
-	//
-	
-
-	/*
-	else if ((v_abs > 0.1) && (v_abs <= 20))
-	{
-		stepper1_setstep(STEP_SIZE_1_32);
-	}
-	else if ((v_abs > 20) && (v_abs <= V_ABS_LIM))
-	{
-		stepper1_setstep(STEP_SIZE_1_16);
-	}*/
-
-	
-	else if (w > 0.1)
-	{
-		w_deg = w*(180 / M_PI);	 //degrees per sec
+		HAL_GPIO_WritePin(GPIOC, stepper1_dir_Pin, STEPPER1_POS_DIR);
+		HAL_GPIO_WritePin(GPIOC, stepper2_dir_Pin, STEPPER2_POS_DIR);
+		w_deg = w_rad*(180 / M_PI);	 //degrees per sec
 		PWM_freq = (uint32_t)(w_deg / (STEP_SIZE / STEP_SIZE_USE));
-		PWM_ARR = (uint32_t)(Tim2_counter_clock / PWM_freq);
-		TIM2->ARR = PWM_ARR;
-		TIM2->CCR1 = (uint32_t)(PWM_ARR / 2);		//Always 50% duty cycle
-		
-		//CHeck if PWM is off
-		if ((READ_BIT(TIM2->CR1, TIM_CR1_CEN)) == 0)
+		if (PWM_freq >= 1)
 		{
-			HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_1);	//start PWM
+			PWM_ARR = (uint32_t)(Tim2_counter_clock / PWM_freq);
+			TIM2->ARR = PWM_ARR;
+			TIM2->CCR1 = (uint32_t)(PWM_ARR / 2);		//Always 50% duty cycle	
+			TIM2->CCR2 = (uint32_t)(PWM_ARR / 2);		//Always 50% duty cycle	
+			//CHeck if PWM is off
+			if ((READ_BIT(TIM2->CR1, TIM_CR1_CEN)) == 0)
+			{
+				HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_1);	//start PWM CH1
+				HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_2);	//start PWM CH2
+			}
 		}
-		
+		else
+		{
+			//Stop PWM
+			HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_1);
+			HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_2);
+		}
 	}
-	else
+	else if (w_rad <= 0)
 	{
-		//Negative velocity??
+		HAL_GPIO_WritePin(GPIOC, stepper1_dir_Pin, STEPPER1_NEG_DIR);
+		HAL_GPIO_WritePin(GPIOC, stepper2_dir_Pin, STEPPER2_NEG_DIR);
+		w_rad = fabs(w_rad);
+		w_deg = w_rad*(180 / M_PI);	 //degrees per sec
+		PWM_freq = (uint32_t)(w_deg / (STEP_SIZE / STEP_SIZE_USE));
+		if (PWM_freq >= 1)
+		{
+			PWM_ARR = (uint32_t)(Tim2_counter_clock / PWM_freq);
+			TIM2->ARR = PWM_ARR;
+			TIM2->CCR1 = (uint32_t)(PWM_ARR / 2);		//Always 50% duty cycle	
+			TIM2->CCR2 = (uint32_t)(PWM_ARR / 2);		//Always 50% duty cycle	
+			//CHeck if PWM is off
+			if ((READ_BIT(TIM2->CR1, TIM_CR1_CEN)) == 0)
+			{
+				HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_1);	//start PWM CH1
+				HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_2);	//start PWM CH2
+			}
+		}
+		else
+		{
+			//Stop PWM
+			HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_1);
+			HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_2);
+		}
 	}
+	
 
 }

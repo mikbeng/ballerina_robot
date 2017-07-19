@@ -61,12 +61,16 @@
 #define B1_GPIO_Port GPIOC
 #define stepper1_dir_Pin GPIO_PIN_0
 #define stepper1_dir_GPIO_Port GPIOC
-#define stepper1_M0_Pin GPIO_PIN_1
-#define stepper1_M0_GPIO_Port GPIOC
-#define stepper1_M1_Pin GPIO_PIN_2
-#define stepper1_M1_GPIO_Port GPIOC
-#define stepper1_M2_Pin GPIO_PIN_3
-#define stepper1_M2_GPIO_Port GPIOC
+#define stepper1_MS1_Pin GPIO_PIN_1
+#define stepper1_MS1_GPIO_Port GPIOC
+#define stepper1_MS2_Pin GPIO_PIN_2
+#define stepper1_MS2_GPIO_Port GPIOC
+#define stepper1_MS3_Pin GPIO_PIN_3
+#define stepper1_MS3_GPIO_Port GPIOC
+#define stepper1_step_Pin GPIO_PIN_0
+#define stepper1_step_GPIO_Port GPIOA
+#define stepper2_step_Pin GPIO_PIN_1
+#define stepper2_step_GPIO_Port GPIOA
 #define USART_TX_Pin GPIO_PIN_2
 #define USART_TX_GPIO_Port GPIOA
 #define USART_RX_Pin GPIO_PIN_3
@@ -77,10 +81,23 @@
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
+#define stepper2_MS1_Pin GPIO_PIN_10
+#define stepper2_MS1_GPIO_Port GPIOC
+#define stepper2_dir_Pin GPIO_PIN_11
+#define stepper2_dir_GPIO_Port GPIOC
+#define stepper2_MS2_Pin GPIO_PIN_12
+#define stepper2_MS2_GPIO_Port GPIOC
+#define stepper2_MS3_Pin GPIO_PIN_2
+#define stepper2_MS3_GPIO_Port GPIOD
 #define SWO_Pin GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
+#define STEPPER_1 (1)
+#define STEPPER_2 (2)
+
+
+//Function prototypes
 void init_system(void);
 
 /* USER CODE END Private defines */

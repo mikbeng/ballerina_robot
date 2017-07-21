@@ -100,6 +100,9 @@
 //Function prototypes
 void init_system(void);
 
+//Global variables
+extern float state_vector[4];
+
 /* USER CODE END Private defines */
 
 void _Error_Handler(char *, int);

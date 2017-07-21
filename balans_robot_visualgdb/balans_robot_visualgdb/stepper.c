@@ -95,7 +95,6 @@ void send_ang_velocity(float w_rad)	//in radians
 	uint32_t PWM_ARR;
 	float w_deg = 0;
 
-
 	if (w_rad > 0)
 	{
 		HAL_GPIO_WritePin(GPIOC, stepper1_dir_Pin, STEPPER1_POS_DIR);

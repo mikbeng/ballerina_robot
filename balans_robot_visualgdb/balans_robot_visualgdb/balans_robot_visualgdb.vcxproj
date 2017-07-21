@@ -199,9 +199,11 @@
     <ClInclude Include="..\..\balans_robot_cube\Inc\stm32f4xx_it.h" />
     <ClInclude Include="..\..\balans_robot_cube\Inc\tim.h" />
     <ClInclude Include="..\..\balans_robot_cube\Inc\usart.h" />
+    <ClInclude Include="controller.h" />
     <ClInclude Include="HTS221.h" />
     <ClInclude Include="init.h" />
     <ClInclude Include="LSM6DSL.h" />
+    <ClInclude Include="model_param.h" />
     <ClInclude Include="stepper.h" />
   </ItemGroup>
   <ItemGroup>
@@ -310,9 +312,11 @@
     <ClCompile Include="..\..\balans_robot_cube\Src\stm32f4xx_it.c" />
     <ClCompile Include="..\..\balans_robot_cube\Src\tim.c" />
     <ClCompile Include="..\..\balans_robot_cube\Src\usart.c" />
+    <ClCompile Include="controller.c" />
     <ClCompile Include="HTS221.c" />
     <ClCompile Include="init.c" />
     <ClCompile Include="LSM6DSL.c" />
+    <ClCompile Include="sensor.c" />
     <ClCompile Include="stepper.c" />
   </ItemGroup>
   <ItemGroup>

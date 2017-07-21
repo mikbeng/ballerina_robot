@@ -476,6 +476,12 @@
     <ClInclude Include="init.h">
       <Filter>Header files\Inc</Filter>
     </ClInclude>
+    <ClInclude Include="controller.h">
+      <Filter>Header files\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="model_param.h">
+      <Filter>Header files\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\balans_robot_cube\Src\freertos.c">
@@ -803,6 +809,12 @@
       <Filter>Source files\Src</Filter>
     </ClCompile>
     <ClCompile Include="init.c">
+      <Filter>Source files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="controller.c">
+      <Filter>Source files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="sensor.c">
       <Filter>Source files\Src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -68,9 +68,10 @@ float temperature;
 int16_t temperature_int;
 uint8_t temp_H;
 uint8_t temp_L;
-float Acc_data[3] = { 0.0, 0.0, 0.0 };
-float Gyro_data[3] = { 0.0, 0.0, 0.0 };
-float w_rad = M_PI;
+float theta_raw = 0;
+float theta_comp = 0;
+float w_rad = 0;
+float state_vector[4] = { 0, 0, 0, 0 };
 /* USER CODE END Variables */
 
 /* Function prototypes -------------------------------------------------------*/
@@ -82,10 +83,11 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 void HTS221_read_reg(void *handle, uint8_t RegAddr, uint16_t NumByteToRead, uint8_t *Data);
 float HTS221_read_temp(void);
-void LSM6DSL_Get_Acc(float *array_data_acc);
-void LSM6DSL_Get_Gyro(float *array_data_gyro);
+void ComplementaryFilter(float *theta_comp, float *theta_raw);
+void get_states(float *statevector, float w_rad);
 void LSM6DSL_Get_config(void);
 void send_ang_velocity(float w_rad);
+float calc_control_input();
 /* USER CODE END FunctionPrototypes */
 
 /* Hook prototypes */
@@ -137,29 +139,35 @@ void StartDefaultTask(void const * argument)
 	int8_t acc_in = 0;
 	uint8_t v_cm_old = 0;
 	float h = 0.01;
+	uint8_t switch_flag = 0;
+	//Initial conditions
+	w_rad = 0;
+	ang_acc = 0;
+	send_ang_velocity(w_rad);
   /* Infinite loop */
 	for (;;)
 	{
-		LSM6DSL_Get_Acc(Acc_data);
-		
+		/*	Simulink send acc
 		HAL_UART_Receive(&huart2, serial_in_buffer, 1, 10);
 		acc_in=(int8_t) serial_in_buffer[0];
-		
 		ang_acc = ((float) acc_in) / 10;
-	
-		//ang_acc = 0.5;
-		
-		
-	  
-		w_rad = (ang_acc*h) + w_rad;  
-		send_ang_velocity(w_rad);
-
-	  
-		//send_float(pi);
-		//pi = pi + 0.5;
-		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-	  
-		v_cm_old = v_cm; 
+		*/
+		if ((HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 0) || (switch_flag == 1))
+		{
+			switch_flag = 1;
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
+			
+			
+			get_states(state_vector, w_rad);
+			ang_acc = calc_control_input();
+			
+			//Ang_acc too big...
+			
+			w_rad = (ang_acc*h) + w_rad;  
+			send_ang_velocity(w_rad);
+			
+		}
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
 		osDelay(10);
 	}
   /* USER CODE END StartDefaultTask */

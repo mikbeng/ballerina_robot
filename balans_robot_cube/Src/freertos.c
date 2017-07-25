@@ -68,10 +68,14 @@ float temperature;
 int16_t temperature_int;
 uint8_t temp_H;
 uint8_t temp_L;
-float theta_raw = 0;
-float theta_comp = 0;
+
+
 float w_rad = 0;
 float state_vector[4] = { 0, 0, 0, 0 };
+int16_t acc_in = 0;
+uint8_t serial_in_buffer[2];
+float ang_acc = 0;
+uint8_t switch_flag = 0;
 /* USER CODE END Variables */
 
 /* Function prototypes -------------------------------------------------------*/
@@ -135,11 +139,11 @@ void StartDefaultTask(void const * argument)
 	float ang_acc = 0;
 	uint8_t v_cm = 0;
 	uint8_t button = 0;
-	uint8_t serial_in_buffer[1];
-	int8_t acc_in = 0;
+	
+	
 	uint8_t v_cm_old = 0;
 	float h = 0.01;
-	uint8_t switch_flag = 0;
+	
 	//Initial conditions
 	w_rad = 0;
 	ang_acc = 0;
@@ -147,26 +151,29 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
 	for (;;)
 	{
-		/*	Simulink send acc
-		HAL_UART_Receive(&huart2, serial_in_buffer, 1, 10);
-		acc_in=(int8_t) serial_in_buffer[0];
+		/*	//Simulink send acc
+		HAL_UART_Receive(&huart2, serial_in_buffer, 2, 10);
+		acc_in = (int16_t) (((serial_in_buffer[0]) << 8) + (serial_in_buffer[1]));
 		ang_acc = ((float) acc_in) / 10;
+		w_rad = (ang_acc*h) + w_rad;  
+		send_ang_velocity(w_rad);
 		*/
+		
+		get_states(state_vector, w_rad);
 		if ((HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 0) || (switch_flag == 1))
 		{
 			switch_flag = 1;
 			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
 			
 			
-			get_states(state_vector, w_rad);
-			ang_acc = calc_control_input();
 			
-			//Ang_acc too big...
+			ang_acc = calc_control_input();
 			
 			w_rad = (ang_acc*h) + w_rad;  
 			send_ang_velocity(w_rad);
 			
 		}
+		
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
 		osDelay(10);
 	}

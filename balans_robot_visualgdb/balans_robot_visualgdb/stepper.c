@@ -94,59 +94,50 @@ void send_ang_velocity(float w_rad)	//in radians
 	uint32_t PWM_freq;
 	uint32_t PWM_ARR;
 	float w_deg = 0;
+	float w_rad_abs = 0;
+	
+	//CHeck if PWM is off
+	if ((READ_BIT(TIM2->CR1, TIM_CR1_CEN)) == 0)
+	{
+		HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_1);	//start PWM CH1
+		HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_2);	//start PWM CH2
+	}
+	
+	w_rad_abs = fabs(w_rad);
+	w_deg = w_rad_abs*(180 / M_PI);	 //degrees per sec
+	PWM_freq = (uint32_t)(w_deg / (STEP_SIZE / STEP_SIZE_USE));
+	
+	if (PWM_freq == 0)
+	{
+		PWM_ARR = 0xFFFFFFFF;
+	}
+	else
+	{
+		PWM_ARR = (uint32_t)(Tim2_counter_clock / PWM_freq);
+	}
+			
+	//Update preload registers TIM2
+	
+	SET_BIT(TIM2->CR1, TIM_CR1_UDIS);	//Set UDIS bit to disable UEV while writing to the preload registers
+	
+	TIM2->ARR = PWM_ARR;
+	TIM2->CCR1 = (uint32_t)(PWM_ARR / 2);		//Always 50% duty cycle	
+	TIM2->CCR2 = (uint32_t)(PWM_ARR / 2);		//Always 50% duty cycle	
+			
+	CLEAR_BIT(TIM2->CR1, TIM_CR1_UDIS);	//Clear UDIS bit to enable UEV again.
+	
+	SET_BIT(TIM2->EGR, TIM_EGR_UG);		//Re-initialize the counter and generates an update of the registers.
+
 
 	if (w_rad > 0)
 	{
 		HAL_GPIO_WritePin(GPIOC, stepper1_dir_Pin, STEPPER1_POS_DIR);
 		HAL_GPIO_WritePin(GPIOC, stepper2_dir_Pin, STEPPER2_POS_DIR);
-		w_deg = w_rad*(180 / M_PI);	 //degrees per sec
-		PWM_freq = (uint32_t)(w_deg / (STEP_SIZE / STEP_SIZE_USE));
-		if (PWM_freq >= 1)
-		{
-			PWM_ARR = (uint32_t)(Tim2_counter_clock / PWM_freq);
-			TIM2->ARR = PWM_ARR;
-			TIM2->CCR1 = (uint32_t)(PWM_ARR / 2);		//Always 50% duty cycle	
-			TIM2->CCR2 = (uint32_t)(PWM_ARR / 2);		//Always 50% duty cycle	
-			//CHeck if PWM is off
-			if ((READ_BIT(TIM2->CR1, TIM_CR1_CEN)) == 0)
-			{
-				HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_1);	//start PWM CH1
-				HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_2);	//start PWM CH2
-			}
-		}
-		else
-		{
-			//Stop PWM
-			HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_1);
-			HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_2);
-		}
 	}
 	else if (w_rad <= 0)
 	{
 		HAL_GPIO_WritePin(GPIOC, stepper1_dir_Pin, STEPPER1_NEG_DIR);
 		HAL_GPIO_WritePin(GPIOC, stepper2_dir_Pin, STEPPER2_NEG_DIR);
-		w_rad = fabs(w_rad);
-		w_deg = w_rad*(180 / M_PI);	 //degrees per sec
-		PWM_freq = (uint32_t)(w_deg / (STEP_SIZE / STEP_SIZE_USE));
-		if (PWM_freq >= 1)
-		{
-			PWM_ARR = (uint32_t)(Tim2_counter_clock / PWM_freq);
-			TIM2->ARR = PWM_ARR;
-			TIM2->CCR1 = (uint32_t)(PWM_ARR / 2);		//Always 50% duty cycle	
-			TIM2->CCR2 = (uint32_t)(PWM_ARR / 2);		//Always 50% duty cycle	
-			//CHeck if PWM is off
-			if ((READ_BIT(TIM2->CR1, TIM_CR1_CEN)) == 0)
-			{
-				HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_1);	//start PWM CH1
-				HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_2);	//start PWM CH2
-			}
-		}
-		else
-		{
-			//Stop PWM
-			HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_1);
-			HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_2);
-		}
 	}
 	
 

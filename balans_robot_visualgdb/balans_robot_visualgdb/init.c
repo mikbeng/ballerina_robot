@@ -18,7 +18,7 @@ void init_system(void)
 	stepper_setstep(STEP_SIZE_USE, STEPPER_2);
 	get_clock_status();
 	SET_BIT(TIM2->CR1, TIM_CR1_ARPE);	//Enables ARPE BIT in CR1 reg for TIM2_ARR auto reload mode
-
+	SET_BIT(TIM2->CR1, TIM_CR1_URS);	//Only counter overflow/underflow generates an update interrupt or DMA request
 }
 
 void get_clock_status(void)

@@ -151,14 +151,15 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
 	for (;;)
 	{
-		/*	//Simulink send acc
+			//Simulink send acc
 		HAL_UART_Receive(&huart2, serial_in_buffer, 2, 10);
 		acc_in = (int16_t) (((serial_in_buffer[0]) << 8) + (serial_in_buffer[1]));
 		ang_acc = ((float) acc_in) / 10;
 		w_rad = (ang_acc*h) + w_rad;  
 		send_ang_velocity(w_rad);
-		*/
 		
+		
+		/*
 		get_states(state_vector, w_rad);
 		if ((HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 0) || (switch_flag == 1))
 		{
@@ -173,7 +174,7 @@ void StartDefaultTask(void const * argument)
 			send_ang_velocity(w_rad);
 			
 		}
-		
+		*/
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
 		osDelay(10);
 	}

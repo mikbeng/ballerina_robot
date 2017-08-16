@@ -18,7 +18,7 @@
 #define STEP_SIZE_1_16	16
 #define STEP_SIZE_1_32	32
 
-#define STEP_SIZE_USE (STEP_SIZE_1_16)
+#define STEP_SIZE_USE (STEP_SIZE_1_8)
 
 #define STEPPER1_POS_DIR (1)
 #define STEPPER1_NEG_DIR (0)
@@ -26,7 +26,6 @@
 #define STEPPER2_NEG_DIR (1)
 
 // Tangential velocity define
-#define WHEEL_D (6.5f)			//wheel diameter in cm
 #define STEP_SIZE (1.8f)		//1 full step size of stepper
 
 

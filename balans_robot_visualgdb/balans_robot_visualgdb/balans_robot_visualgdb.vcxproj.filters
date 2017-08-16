@@ -482,6 +482,9 @@
     <ClInclude Include="model_param.h">
       <Filter>Header files\Inc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\balans_robot_cube\Inc\spi.h">
+      <Filter>Header files\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\balans_robot_cube\Src\freertos.c">
@@ -815,6 +818,9 @@
       <Filter>Source files\Src</Filter>
     </ClCompile>
     <ClCompile Include="sensor.c">
+      <Filter>Source files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\balans_robot_cube\Src\spi.c">
       <Filter>Source files\Src</Filter>
     </ClCompile>
   </ItemGroup>

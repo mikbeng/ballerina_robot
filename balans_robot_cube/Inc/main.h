@@ -77,12 +77,24 @@
 #define USART_RX_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
+#define stepper1_EN_Pin GPIO_PIN_12
+#define stepper1_EN_GPIO_Port GPIOB
+#define stepper2_EN_Pin GPIO_PIN_13
+#define stepper2_EN_GPIO_Port GPIOB
+#define stepper1_SLEEP_Pin GPIO_PIN_6
+#define stepper1_SLEEP_GPIO_Port GPIOC
+#define stepper2_SLEEP_Pin GPIO_PIN_7
+#define stepper2_SLEEP_GPIO_Port GPIOC
+#define stepper1_RST_Pin GPIO_PIN_8
+#define stepper1_RST_GPIO_Port GPIOC
+#define stepper2_RST_Pin GPIO_PIN_9
+#define stepper2_RST_GPIO_Port GPIOC
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
-#define stepper2_MS1_Pin GPIO_PIN_10
-#define stepper2_MS1_GPIO_Port GPIOC
+#define stepper2_MS1_Pin GPIO_PIN_15
+#define stepper2_MS1_GPIO_Port GPIOA
 #define stepper2_dir_Pin GPIO_PIN_11
 #define stepper2_dir_GPIO_Port GPIOC
 #define stepper2_MS2_Pin GPIO_PIN_12
@@ -95,11 +107,13 @@
 /* USER CODE BEGIN Private defines */
 #define STEPPER_1 (1)
 #define STEPPER_2 (2)
-
+#define R_WHEEL (0.104/2)
+//#define I_WHEEL 0.00001156 
+#define I_WHEEL 0.03	//Check this parameter! 
 
 //Function prototypes
 void init_system(void);
-
+void LSM6DSL_init(void);
 //Global variables
 extern float state_vector[4];
 

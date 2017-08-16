@@ -30,7 +30,7 @@ void get_states(float *statevector, float w_rad)
 	*(statevector + 2) = 0;
 	
 	//dx
-	*(statevector + 3) = w_rad;	//WRONG!
+	*(statevector + 3) = w_rad*R_WHEEL;	//WRONG!
 	
 }
 

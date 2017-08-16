@@ -152,29 +152,36 @@ void StartDefaultTask(void const * argument)
 	for (;;)
 	{
 			//Simulink send acc
+			/*
 		HAL_UART_Receive(&huart2, serial_in_buffer, 2, 10);
 		acc_in = (int16_t) (((serial_in_buffer[0]) << 8) + (serial_in_buffer[1]));
 		ang_acc = ((float) acc_in) / 10;
 		w_rad = (ang_acc*h) + w_rad;  
 		send_ang_velocity(w_rad);
+		*/
 		
-		
-		/*
+		//HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_WHO_AM_I_REG, 1, &signature, 1, 100);	//Get device signature
+		//init_system();
+		//LSM6DSL_init();
 		get_states(state_vector, w_rad);
 		if ((HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 0) || (switch_flag == 1))
 		{
 			switch_flag = 1;
 			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
 			
-			
-			
 			ang_acc = calc_control_input();
 			
 			w_rad = (ang_acc*h) + w_rad;  
 			send_ang_velocity(w_rad);
+			/*
+			if (w_rad < 5)
+			{
+					
+			}*/
+			
 			
 		}
-		*/
+		
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
 		osDelay(10);
 	}

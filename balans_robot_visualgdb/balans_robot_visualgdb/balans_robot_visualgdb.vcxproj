@@ -195,7 +195,6 @@
     <ClInclude Include="..\..\balans_robot_cube\Inc\gpio.h" />
     <ClInclude Include="..\..\balans_robot_cube\Inc\i2c.h" />
     <ClInclude Include="..\..\balans_robot_cube\Inc\main.h" />
-    <ClInclude Include="..\..\balans_robot_cube\Inc\spi.h" />
     <ClInclude Include="..\..\balans_robot_cube\Inc\stm32f4xx_hal_conf.h" />
     <ClInclude Include="..\..\balans_robot_cube\Inc\stm32f4xx_it.h" />
     <ClInclude Include="..\..\balans_robot_cube\Inc\tim.h" />
@@ -204,6 +203,8 @@
     <ClInclude Include="HTS221.h" />
     <ClInclude Include="init.h" />
     <ClInclude Include="LSM6DSL.h" />
+    <ClInclude Include="MLX_calc.h" />
+    <ClInclude Include="mlx_communication.h" />
     <ClInclude Include="model_param.h" />
     <ClInclude Include="stepper.h" />
   </ItemGroup>
@@ -308,7 +309,6 @@
     <ClCompile Include="..\..\balans_robot_cube\Src\gpio.c" />
     <ClCompile Include="..\..\balans_robot_cube\Src\i2c.c" />
     <ClCompile Include="..\..\balans_robot_cube\Src\main.c" />
-    <ClCompile Include="..\..\balans_robot_cube\Src\spi.c" />
     <ClCompile Include="..\..\balans_robot_cube\Src\stm32f4xx_hal_msp.c" />
     <ClCompile Include="..\..\balans_robot_cube\Src\stm32f4xx_hal_timebase_TIM.c" />
     <ClCompile Include="..\..\balans_robot_cube\Src\stm32f4xx_it.c" />
@@ -318,6 +318,8 @@
     <ClCompile Include="HTS221.c" />
     <ClCompile Include="init.c" />
     <ClCompile Include="LSM6DSL.c" />
+    <ClCompile Include="MLX_calc.c" />
+    <ClCompile Include="mlx_communication.c" />
     <ClCompile Include="sensor.c" />
     <ClCompile Include="stepper.c" />
   </ItemGroup>

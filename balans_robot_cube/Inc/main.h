@@ -51,7 +51,7 @@
   /* Includes ------------------------------------------------------------------*/
 
 /* USER CODE BEGIN Includes */
-
+#include <stdint.h>
 /* USER CODE END Includes */
 
 /* Private define ------------------------------------------------------------*/
@@ -75,8 +75,12 @@
 #define USART_TX_GPIO_Port GPIOA
 #define USART_RX_Pin GPIO_PIN_3
 #define USART_RX_GPIO_Port GPIOA
+#define MLX1_CS_Pin GPIO_PIN_4
+#define MLX1_CS_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
+#define MLX1_MOSI_MISO_Pin GPIO_PIN_4
+#define MLX1_MOSI_MISO_GPIO_Port GPIOC
 #define stepper1_EN_Pin GPIO_PIN_12
 #define stepper1_EN_GPIO_Port GPIOB
 #define stepper2_EN_Pin GPIO_PIN_13
@@ -89,12 +93,16 @@
 #define stepper1_RST_GPIO_Port GPIOC
 #define stepper2_RST_Pin GPIO_PIN_9
 #define stepper2_RST_GPIO_Port GPIOC
+#define MLX1_PULL_Pin GPIO_PIN_10
+#define MLX1_PULL_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
 #define stepper2_MS1_Pin GPIO_PIN_15
 #define stepper2_MS1_GPIO_Port GPIOA
+#define MLX1_SCLK_Pin GPIO_PIN_10
+#define MLX1_SCLK_GPIO_Port GPIOC
 #define stepper2_dir_Pin GPIO_PIN_11
 #define stepper2_dir_GPIO_Port GPIOC
 #define stepper2_MS2_Pin GPIO_PIN_12
@@ -116,6 +124,15 @@ void init_system(void);
 void LSM6DSL_init(void);
 //Global variables
 extern float state_vector[4];
+
+extern uint64_t systemTime;
+extern float length, speed;
+extern int32_t quadrantCount, quadrantCount2;
+extern float lengthOffset;
+extern float maxLength;
+extern uint8_t batteryStatus;
+extern uint8_t currentQuadrant, currentQuadrant2;
+extern float GVNPressure;
 
 /* USER CODE END Private defines */
 

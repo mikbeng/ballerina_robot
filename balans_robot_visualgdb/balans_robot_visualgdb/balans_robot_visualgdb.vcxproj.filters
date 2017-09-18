@@ -482,7 +482,10 @@
     <ClInclude Include="model_param.h">
       <Filter>Header files\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\balans_robot_cube\Inc\spi.h">
+    <ClInclude Include="MLX_calc.h">
+      <Filter>Header files\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="mlx_communication.h">
       <Filter>Header files\Inc</Filter>
     </ClInclude>
   </ItemGroup>
@@ -820,7 +823,10 @@
     <ClCompile Include="sensor.c">
       <Filter>Source files\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\balans_robot_cube\Src\spi.c">
+    <ClCompile Include="MLX_calc.c">
+      <Filter>Source files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="mlx_communication.c">
       <Filter>Source files\Src</Filter>
     </ClCompile>
   </ItemGroup>

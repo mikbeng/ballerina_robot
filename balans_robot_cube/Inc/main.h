@@ -115,9 +115,10 @@
 /* USER CODE BEGIN Private defines */
 #define STEPPER_1 (1)
 #define STEPPER_2 (2)
-#define R_WHEEL (0.104/2)
+#define R_WHEEL (0.06/2)
+#define TS 0.1
 //#define I_WHEEL 0.00001156 
-#define I_WHEEL 0.03	//Check this parameter! 
+#define I_WHEEL 0.001	//Check this parameter! 
 
 //Function prototypes
 void init_system(void);

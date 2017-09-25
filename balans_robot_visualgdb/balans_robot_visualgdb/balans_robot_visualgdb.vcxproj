@@ -206,6 +206,7 @@
     <ClInclude Include="MLX_calc.h" />
     <ClInclude Include="mlx_communication.h" />
     <ClInclude Include="model_param.h" />
+    <ClInclude Include="sensor.h" />
     <ClInclude Include="stepper.h" />
   </ItemGroup>
   <ItemGroup>

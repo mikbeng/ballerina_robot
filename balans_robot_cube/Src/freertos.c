@@ -70,7 +70,7 @@ uint8_t temp_H;
 uint8_t temp_L;
 
 
-float w_rad = 0;
+float w_deg = 0;
 float state_vector[4] = { 0, 0, 0, 0 };
 int16_t acc_in = 0;
 uint8_t serial_in_buffer[2];
@@ -91,7 +91,8 @@ void ComplementaryFilter(float *theta_comp, float *theta_raw);
 void get_states(float *statevector, float w_rad);
 void LSM6DSL_Get_config(void);
 void send_ang_velocity(float w_rad);
-float calc_control_input();
+float calc_control_input(void);
+float PID(void);
 /* USER CODE END FunctionPrototypes */
 
 /* Hook prototypes */
@@ -142,12 +143,11 @@ void StartDefaultTask(void const * argument)
 	
 	
 	uint8_t v_cm_old = 0;
-	float h = 0.01;
 	
 	//Initial conditions
-	w_rad = 0;
+	w_deg = 0;
 	ang_acc = 0;
-	send_ang_velocity(w_rad);
+	send_ang_velocity(w_deg);
   /* Infinite loop */
 	for (;;)
 	{
@@ -163,7 +163,7 @@ void StartDefaultTask(void const * argument)
 		//HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_WHO_AM_I_REG, 1, &signature, 1, 100);	//Get device signature
 		//init_system();
 		//LSM6DSL_init();
-		get_states(state_vector, w_rad);
+		get_states(state_vector, w_deg);
 		if ((HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 0) || (switch_flag == 1))
 		{
 			switch_flag = 1;
@@ -171,19 +171,16 @@ void StartDefaultTask(void const * argument)
 			
 			ang_acc = calc_control_input();
 			
-			w_rad = (ang_acc*h) + w_rad;  
-			send_ang_velocity(w_rad);
-			/*
-			if (w_rad < 5)
-			{
-					
-			}*/
+			//ang_acc = PID();
 			
-			
+			w_deg = (ang_acc*TS) + w_deg;  
+			//w_rad = 1;
+			send_ang_velocity(w_deg);
+				
 		}
 		
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
-		osDelay(10);
+		osDelay(100);
 	}
   /* USER CODE END StartDefaultTask */
 }

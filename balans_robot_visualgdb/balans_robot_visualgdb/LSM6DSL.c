@@ -108,35 +108,41 @@ void LSM6DSL_Get_Acc(float *array_data_acc)
 	int16_t Raw_Y_acc = 0;
 	int16_t Raw_Z_acc = 0;
 
-	float Acceleration_X = 0;
-	float Acceleration_Y = 0;
-	float Acceleration_Z = 0;
+	static float Acceleration_X = 0;
+	static float Acceleration_Y = 0;
+	static float Acceleration_Z = 0;
 
 	LSM6DSL_Get_config();
 
 	//Wait for acceleration data to be ready
+	/*
 	do {
 		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_STATUS_REG, 1, &LSM6DSL_STATUS, 1, 10);	
-	} while ((LSM6DSL_STATUS & LSM6DS0_STATUS_REG_XLDA) == 0);
+	} while ((LSM6DSL_STATUS & LSM6DS0_STATUS_REG_XLDA) == 0); */
+	
+	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_STATUS_REG, 1, &LSM6DSL_STATUS, 1, 10);
+	
+	if (((LSM6DSL_STATUS & (1 << LSM6DS0_STATUS_REG_XLDA)) >> LSM6DS0_STATUS_REG_XLDA) == 1)
+	{
+		//Read X,Y and Z registers
+		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTX_L_XL, 1, &OutX_L_XL, 1, 10);	
+		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTX_H_XL, 1, &OutX_H_XL, 1, 10);
 
-	//Read X,Y and Z registers
-	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTX_L_XL, 1, &OutX_L_XL, 1, 10);	
-	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTX_H_XL, 1, &OutX_H_XL, 1, 10);
+		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTY_L_XL, 1, &OutY_L_XL, 1, 10);	
+		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTY_H_XL, 1, &OutY_H_XL, 1, 10);
 
-	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTY_L_XL, 1, &OutY_L_XL, 1, 10);	
-	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTY_H_XL, 1, &OutY_H_XL, 1, 10);
+		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTZ_L_XL, 1, &OutZ_L_XL, 1, 10);	
+		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTZ_H_XL, 1, &OutZ_H_XL, 1, 10);
 
-	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTZ_L_XL, 1, &OutZ_L_XL, 1, 10);	
-	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTZ_H_XL, 1, &OutZ_H_XL, 1, 10);
+		Raw_X_acc = ((OutX_H_XL << 8) | OutX_L_XL);
+		Raw_Y_acc = ((OutY_H_XL << 8) | OutY_L_XL);
+		Raw_Z_acc = ((OutZ_H_XL << 8) | OutZ_L_XL);
 
-	Raw_X_acc = ((OutX_H_XL << 8) | OutX_L_XL);
-	Raw_Y_acc = ((OutY_H_XL << 8) | OutY_L_XL);
-	Raw_Z_acc = ((OutZ_H_XL << 8) | OutZ_L_XL);
-
-	Acceleration_X = (float)Raw_X_acc * acc_sensitivity;
-	Acceleration_Y = (float)Raw_Y_acc * acc_sensitivity;
-	Acceleration_Z = (float)Raw_Z_acc * acc_sensitivity;
-
+		Acceleration_X = (float)Raw_X_acc * acc_sensitivity;
+		Acceleration_Y = (float)Raw_Y_acc * acc_sensitivity;
+		Acceleration_Z = (float)Raw_Z_acc * acc_sensitivity;	
+	}
+	
 	*array_data_acc = Acceleration_X;
 	*(array_data_acc+1) = Acceleration_Y;
 	*(array_data_acc+2) = Acceleration_Z;
@@ -156,35 +162,41 @@ void LSM6DSL_Get_Gyro(float *array_data_gyro)
 	int16_t Raw_Y_gyro = 0;
 	int16_t Raw_Z_gyro = 0;
 
-	float Gyro_X = 0;
-	float Gyro_Y = 0;
-	float Gyro_Z = 0;
+	static float Gyro_X = 0;
+	static float Gyro_Y = 0;
+	static float Gyro_Z = 0;
 
 	LSM6DSL_Get_config();
 
-	//Wait for acceleration data to be ready
+	//Wait for Gyro data to be ready
+	/*
 	do {
 		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_STATUS_REG, 1, &LSM6DSL_STATUS, 1, 10);	
-	} while ((LSM6DSL_STATUS & LSM6DS0_STATUS_REG_GDA) == 0);
+	} while ((LSM6DSL_STATUS & LSM6DS0_STATUS_REG_GDA) == 0); */
+	
+	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_STATUS_REG, 1, &LSM6DSL_STATUS, 1, 10);
+	
+	if (((LSM6DSL_STATUS & (1 << LSM6DS0_STATUS_REG_GDA)) >> LSM6DS0_STATUS_REG_GDA) == 1)
+	{
+		//Read X,Y and Z registers
+		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTX_L_G, 1, &OutX_L_G, 1, 10);	
+		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTX_H_G, 1, &OutX_H_G, 1, 10);
 
-	//Read X,Y and Z registers
-	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTX_L_G, 1, &OutX_L_G, 1, 10);	
-	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTX_H_G, 1, &OutX_H_G, 1, 10);
+		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTY_L_G, 1, &OutY_L_G, 1, 10);	
+		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTY_H_G, 1, &OutY_H_G, 1, 10);
 
-	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTY_L_G, 1, &OutY_L_G, 1, 10);	
-	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTY_H_G, 1, &OutY_H_G, 1, 10);
+		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTZ_L_G, 1, &OutZ_L_G, 1, 10);	
+		HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTZ_H_G, 1, &OutZ_H_G, 1, 10);
 
-	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTZ_L_G, 1, &OutZ_L_G, 1, 10);	
-	HAL_I2C_Mem_Read(&hi2c1, LSM6DSL_ADDRESS, LSM6DSL_OUTZ_H_G, 1, &OutZ_H_G, 1, 10);
+		Raw_X_gyro = ((OutX_H_G << 8) | OutX_L_G);
+		Raw_Y_gyro = ((OutY_H_G << 8) | OutY_L_G);
+		Raw_Z_gyro = ((OutZ_H_G << 8) | OutZ_L_G);
 
-	Raw_X_gyro = ((OutX_H_G << 8) | OutX_L_G);
-	Raw_Y_gyro = ((OutY_H_G << 8) | OutY_L_G);
-	Raw_Z_gyro = ((OutZ_H_G << 8) | OutZ_L_G);
-
-	Gyro_X = (float)Raw_X_gyro * gyro_sensitivity;
-	Gyro_Y = (float)Raw_Y_gyro * gyro_sensitivity;
-	Gyro_Z = (float)Raw_Z_gyro * gyro_sensitivity;
-
+		Gyro_X = (float)Raw_X_gyro * gyro_sensitivity;
+		Gyro_Y = (float)Raw_Y_gyro * gyro_sensitivity;
+		Gyro_Z = (float)Raw_Z_gyro * gyro_sensitivity;
+	}
+	
 	*array_data_gyro = Gyro_X;
 	*(array_data_gyro + 1) = Gyro_Y;
 	*(array_data_gyro + 2) = Gyro_Z;

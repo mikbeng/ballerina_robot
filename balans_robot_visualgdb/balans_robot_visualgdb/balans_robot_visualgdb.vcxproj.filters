@@ -488,6 +488,9 @@
     <ClInclude Include="mlx_communication.h">
       <Filter>Header files\Inc</Filter>
     </ClInclude>
+    <ClInclude Include="sensor.h">
+      <Filter>Header files\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\balans_robot_cube\Src\freertos.c">

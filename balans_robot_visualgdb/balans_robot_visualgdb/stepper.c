@@ -89,12 +89,12 @@ void stepper_setstep(uint32_t step_size_used, uint32_t stepper_val)
 	}
 }
 
-void send_ang_velocity(float w_rad)	//in radians
+void send_ang_velocity(float w_deg)	//in radians
 {
 	uint32_t PWM_freq;
 	uint32_t PWM_ARR;
-	float w_deg = 0;
-	float w_rad_abs = 0;
+	//float w_deg = 0;
+	float w_deg_abs = 0;
 	
 	//CHeck if PWM is off
 	if ((READ_BIT(TIM2->CR1, TIM_CR1_CEN)) == 0)
@@ -103,9 +103,9 @@ void send_ang_velocity(float w_rad)	//in radians
 		HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_2);	//start PWM CH2
 	}
 	
-	w_rad_abs = fabs(w_rad);
-	w_deg = w_rad_abs*(180 / M_PI);	 //degrees per sec
-	PWM_freq = (uint32_t)(w_deg / (STEP_SIZE / STEP_SIZE_USE));
+	w_deg_abs = fabs(w_deg);
+	//w_deg = w_rad_abs*(180 / M_PI);	 //degrees per sec
+	PWM_freq = (uint32_t)(w_deg_abs / (STEP_SIZE / STEP_SIZE_USE));
 	
 	if (PWM_freq == 0)
 	{
@@ -128,13 +128,12 @@ void send_ang_velocity(float w_rad)	//in radians
 	
 	SET_BIT(TIM2->EGR, TIM_EGR_UG);		//Re-initialize the counter and generates an update of the registers.
 
-
-	if (w_rad > 0)
+	if (w_deg > 0)
 	{
 		HAL_GPIO_WritePin(GPIOC, stepper1_dir_Pin, STEPPER1_POS_DIR);
 		HAL_GPIO_WritePin(GPIOC, stepper2_dir_Pin, STEPPER2_POS_DIR);
 	}
-	else if (w_rad <= 0)
+	else if (w_deg <= 0)
 	{
 		HAL_GPIO_WritePin(GPIOC, stepper1_dir_Pin, STEPPER1_NEG_DIR);
 		HAL_GPIO_WritePin(GPIOC, stepper2_dir_Pin, STEPPER2_NEG_DIR);

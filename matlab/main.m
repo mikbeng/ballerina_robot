@@ -7,7 +7,7 @@ k=0.001;
 n=4; %system states
 p=1; %inputs
 
-Ts=0.01;
+Ts=0.001;
 
 
 %% Wheel calcs
